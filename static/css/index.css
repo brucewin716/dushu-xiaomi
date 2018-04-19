@@ -1,0 +1,20 @@
+/*
+* @Author: Administrator
+* @Date:   2018-04-19 12:32:11
+* @Last Modified by:   Administrator
+* @Last Modified time: 2018-04-19 13:04:41
+*/
+.bookMall .mint-searchbar{
+	background: #fff;
+ }
+ .bookMall .mint-searchbar .mint-searchbar-inner{
+ 	border: 1px solid #F5F5F5;
+ }
+ .bookMall .mint-searchbar .mint-searchbar-inner .mint-searchbar-core{
+ 	font-size: 12px;
+ 	text-indent: 10px;
+ 	color:#999999;
+ }
+ .bookMall .mint-swipe .mint-swipe-items-wrap{
+ 	min-height:135px;
+ }
