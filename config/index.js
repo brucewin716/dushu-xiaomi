@@ -10,8 +10,21 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
+    proxyTable: {
+        "/hs":{
+            target:"http://dushu.xiaomi.com",
+            changeOrigin: true,  //是否跨域
+        },
+        "/store":{
+          target:"http://dushu.xiaomi.com",
+          changeOrigin: true,  //是否跨域  
+        },
+        "/mfsv2":{
+           target:"http://html.read.duokan.com",
+          changeOrigin: true,  //是否跨域   
+        }
+    }
+,
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

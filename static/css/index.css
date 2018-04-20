@@ -2,8 +2,14 @@
 * @Author: Administrator
 * @Date:   2018-04-19 12:32:11
 * @Last Modified by:   Administrator
-* @Last Modified time: 2018-04-19 13:04:41
+* @Last Modified time: 2018-04-20 14:28:58
 */
+body{
+	font-family: 'miui','Helvetica Neue',Helvetica,STHeiTi,sans-serif;
+	font-size: 14px;
+	color: #555;
+	line-height: 1.5em;
+}
 .bookMall .mint-searchbar{
 	background: #fff;
  }
