@@ -3,36 +3,36 @@
     <div class="bookMallTop">
         <div class="search">输入书名/作者/关键字</div>
         <mt-swipe :auto="2000">
-        <mt-swipe-item><img src="../image/1.jpg"></mt-swipe-item>
-        <mt-swipe-item><img src="../image/2.jpg"></mt-swipe-item>
+          <mt-swipe-item><img src="../image/1.jpg"></mt-swipe-item>
+          <mt-swipe-item><img src="../image/2.jpg"></mt-swipe-item>
         </mt-swipe>
         <ul class='subItem'>
-         <li>
-           <img src="../image/free.png" alt="">
-           <p>限免</p>
-         </li>
-         <li>
-           <img src="../image/female.png" alt="">
-           <p>女生</p>
-         </li>
-         <li>
-           <img src="../image/male.png" alt="">
-           <p>男生</p>
-         </li>
-         <li>
-           <img src="../image/classify.png" alt="">
-           <p>分类</p>
-         </li>
-         <li>
-           <img src="../image/ranking.png" alt="">
-           <p>排行</p>
-         </li>
+           <li>
+             <img src="../image/free.png" alt="">
+             <p>限免</p>
+           </li>
+           <li>
+             <img src="../image/female.png" alt="">
+             <p>女生</p>
+           </li>
+           <li>
+             <img src="../image/male.png" alt="">
+             <p>男生</p>
+           </li>
+           <li>
+             <img src="../image/classify.png" alt="">
+             <p>分类</p>
+           </li>
+           <li>
+             <img src="../image/ranking.png" alt="">
+             <p>排行</p>
+           </li>
         </ul>
     </div> 
     <div class="wrap">
       <section class='channel-group main-card'>
         <div class="channel-group_header">
-          <h2>{{this.items[1].ad_name}}</h2>
+          <h2>{{items[1].ad_name}}</h2>
         </div>
         <ul class="book-table">
           <li v-for="item in items[1].data.data">
@@ -48,54 +48,49 @@
       </section>
       <section class='channel-h5 channel-h5_tab' id='Tag_10'>
         <div class="channel-h5_header">
-          <p class='channer-h5_title channel-group_title_left'>
-            重磅推荐
+          <p class='channel-h5_title channel-group_title_left'>
+            {{items[2].ad_name}}
             <i>推</i>
           </p>
           <div class="tab">
             <a href="javascript:;" class='tab_on'>男</a><a href="javascript:;">女</a>
           </div>
         </div>
-        <div class="tab_bd">
+
+        <div class="tab_bd" >
           <div class='tab_wrap'>
             <div class='Fade list-h5_wrap data-dom-uid="6"'>
-              <div>
+              <div v-for="(male,index) in maleMajor">
                 <ul class='list-h5'>
                   <li>
                     <div class="book-h5">
                       <div class='book-h5_cover Lazy_loading Lazy_loaded'>
-                        <img src="" alt="" alt='我的绝美女神老婆'>
+                        <img :src="male.cover"  alt=''>
                         <div class="u-tagRT"></div>
                         <p class='book-h5_finish'>完结</p>
                         <div class="book-h5_order">1</div>
                       </div>
                       <div class='book-h5_info'>
-                        <p class='book-h5_title'>我的绝美女神老婆</p>
-                        <p class="book-h5_author">血色红泪</p>
-                        <p class="book-h5_summary">身怀绝技的方少阳，带着对大都市的美好憧憬，本想投靠师娘，却当上了医院妇科的男医生，泡了个美女医生，误...</p>
+                        <p class='book-h5_title'>{{male.title}}</p>
+                        <p class="book-h5_author">{{male.author}}</p>
+                        <p class="book-h5_summary">{{male.summary}}</p>
                         <div class="book-h5_wrap">
-                          <div class='book-h5_tag'>都市情缘</div>
-                          <div class='book-h5_tag'>热血都市</div>
-                          <div class='book-h5_tag'>506万字</div>
+                          <div class='book-h5_tag' v-for="tag in male.tags.slice(0,2)">{{tag}}</div>
+                          <div class='book-h5_tag'>{{String(male.word_count).slice(0,3)+'万字'}}</div>
                         </div>
                       </div>
                     </div>
                   </li>
-                  <li>
+                  <li v-for="(list,index) in male.list">
                     <div class="book-h5 book-h5_no-img">
-                      <span class='book-h5_no-img_order'>02</span>
+                      <span class='book-h5_no-img_order'>{{index+2}}</span>
                       <div class="book-h5_no-img_info">
-                        <p class='book-h5_no-img_title'>超级姐夫 <i class='book-h5_no-img_author'><span class='author'>酒天</span></i></p>
+                        <p class='book-h5_no-img_title'>{{list.title}}<i class='book-h5_no-img_author'><span class='author'>{{list.authors}}</span></i></p>
                       </div>
                     </div>
                   </li>
-<!--                   <li></li>
-                  <li></li>
-                  <li></li> -->
                 </ul>
               </div>
-              <!-- <div></div> -->
-              <div style='visibility:visible'></div>
             </div>
             <div class='channel-h5_footer_next' id='Tag_14'>
               <a href="javascript:;" class='btn-h5_next'>换一换</a><a href="javascript:;" class='btn-h5_more'>查看全部</a>
@@ -103,19 +98,23 @@
           </div>
           <div class='tab_wrap' style="display:none;"></div>
         </div>
-      </section>
-    </div> 
+     </section> 
+    </div>
   </div>
 </template>
 
 <script>
-import { Swipe, SwipeItem, Indicator,Toast } from 'mint-ui';
+import { Swipe,SwipeItem,Indicator,Toast } from 'mint-ui';
 import axios from 'axios';
 export default {
   name: 'Bookmall',
   data () {
     return {
-        items:[]
+        items:[],
+        subItems:[],
+        maleArr:[],
+        femaleArr:[],
+        maleMajor:[],
     }
   },
   mounted(){
@@ -129,9 +128,34 @@ export default {
     }).then((res)=>{
       Indicator.close();
       var result=res.data;
+      console.log(result);
       if(result.ad_setting_id==418){
           this.items=result.items;
-          console.log(this.items);
+          for(var i=0;i<2;i++){
+                this.subItems.push(result.items[2].data.data.splice(0,15));//30份数据男女各分出15份
+          }
+          for(var j=0;j<this.subItems.length;j++){
+              for(var k=0;k<3;k++){
+                if(j==0){
+                  this.maleArr.push(this.subItems[j].splice(0,5));//男的15份数据再分出3大份
+                }else{
+                   this.femaleArr.push(this.subItems[j].splice(0,5));//女的15份数据再分出3大份
+                }
+               
+              }
+          }
+
+          for( var l=0;l<this.maleArr.length;l++){//遍历男3大份数据
+              for(var m=0;m<this.maleArr[l].length;m++){//遍历男3大份数据中的5小份数据
+                  if(m==0){
+                   this.maleMajor.push(this.maleArr[l][m]);
+                   this.maleMajor[l].list=[]; 
+                  }else{
+                    this.maleMajor[l].list.push(this.maleArr[l][m]);
+                  }
+              }
+          }
+          console.log(this.maleMajor);
       }else{
         Toast({
           message: '数据请求失败',
@@ -146,7 +170,7 @@ export default {
     });
   },
   methods:{
-
+       
   }
 }
 </script>
@@ -183,7 +207,7 @@ export default {
     font-size: 12px;
     text-align: center;
     line-height: 2.4;
-    /* -webkit-box-flex:1; */
+    -webkit-box-flex:1;
   }
   .bookMall .bookMallTop .subItem li img{
     display: block;
@@ -191,7 +215,7 @@ export default {
     width: 22px;
     height: 22px;
   }
-  .wrap .channel-group{
+   .wrap .channel-group{
     border-bottom: 10px solid #f5f5f5;
   }
  .wrap .channel-group .channel-group_header{
@@ -254,6 +278,8 @@ export default {
   font-size: 14px;
   padding: 10px 0px;
  }
+
+
 .channel-h5{
   position: relative;
   border-bottom: 10px solid #f5f5f5;
@@ -269,9 +295,6 @@ export default {
   font: bold 13px/13px a;
   color: rgba(0,0,0,0.9);
 }
-.channel-group_title_left{
-  text-align: left;
-}
 .channel-h5_title>i{
   position: absolute;
   margin: -1px 0 0 5px;
@@ -280,6 +303,9 @@ export default {
   color: #fff;
   background: #53ac7d;
   border-radius: 1px;
+}
+.channel-group_title_left{
+  text-align: left;
 }
 .tab{
   position: absolute;
@@ -298,6 +324,7 @@ export default {
 .tab_on{
   color: #528ac8 !important;
 }
+
 .tab_bd{
   overflow: hidden;
 }
@@ -315,17 +342,18 @@ export default {
   float: left;
   position: relative;
   width: 100%;
-  margin-right: -100%;
-  visibility: hidden;
+ /*  margin-right: -100%; */
+  /* visibility: hidden; */
   z-index: 1;
   -webkit-transition: opacity 400s ease-in-out;
 }
 .list-h5,.list-more_wrap{
   padding: 0px 13px;
 }
-.list-h5 li ,.list-more_wrap li{
+.list-h5 li,.list-more_wrap li{
   padding: 17px 0px;
   border-bottom: 1px solid #f0f0f0;
+  text-align: left;
 }
 .book-h5{
   overflow: hidden;
@@ -341,7 +369,9 @@ export default {
   overflow: hidden;
 }
 .book-h5 img{
-  opacity: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 1px;
 }
 .book-h5_finish{
   position: absolute;
@@ -362,7 +392,7 @@ export default {
   width: 12px;
   font: 8px/0.8em a;
   color: #fff;
-  background: url('V3CAzyZh.png') no-repeat;
+  background: url('../image/v3cazyzh.png') no-repeat;
   background-size: 12px 17px;
 }
 .book-h5 .book-h5_info{
@@ -394,8 +424,8 @@ export default {
   color: rgba(0,0,0,0.6);
   overflow: hidden;
   text-overflow: ellipsis;
- /*  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical; */
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
 }
 .book-h5_wrap{
   margin-top: 10px;
@@ -436,5 +466,23 @@ export default {
   font: 12px/12px a;
   color: rgba(0,0,0,0.4);
   background: #fff;
+} 
+.channel-h5_footer_next{
+  border-top: 1px solid #f0f0f0;
+  overflow: hidden;
 }
+.channel-h5_footer_next>a:first-child{
+  border-right: 1px solid #f0f0f0;
+}
+.channel-h5_footer_next>a{
+  float: left;
+  width: 50%;
+  padding: 14px;
+  font: 13px/1.3em a;
+  color: rgba(0,0,0,0.9);
+  box-sizing: border-box;
+  text-align: center;
+
+}
+
 </style>
