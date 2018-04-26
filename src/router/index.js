@@ -13,7 +13,7 @@ export default new Router({
       component:Index,
       children:[
       	{
-      		path:'/bookmall',
+      		path:'bookmall',
       		component:Bookmall
       	},
       	{
