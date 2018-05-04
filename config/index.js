@@ -15,6 +15,10 @@ module.exports = {
             target:"http://dushu.xiaomi.com",
             changeOrigin: true,  //是否跨域
         },
+        "/rock":{
+            target:"http://dushu.xiaomi.com",
+            changeOrigin: true,  //是否跨域
+        },
         "/store":{
           target:"http://dushu.xiaomi.com",
           changeOrigin: true,  //是否跨域  

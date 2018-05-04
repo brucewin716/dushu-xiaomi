@@ -49,6 +49,7 @@
      <female-love></female-love>
      <male-love></male-love>
      <free-spec></free-spec>
+     <water-fall></water-fall>
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import FemaleRec from '@/components/FemaleRec';
 import MaleLove from '@/components/MaleLove';
 import FemaleLove from '@/components/FemaleLove';
 import FreeSpec from '@/components/FreeSpec';
+import WaterFall from '@/components/WaterFall';
 export default {
   name: 'Bookmall',
   data () {
@@ -75,7 +77,8 @@ export default {
     FemaleRec,
     MaleLove,
     FemaleLove,
-    FreeSpec
+    FreeSpec,
+    WaterFall
   },
   mounted(){
       Indicator.open({
