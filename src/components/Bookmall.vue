@@ -1,5 +1,15 @@
 <template>
   <div class="bookMall">
+    <div class="header">
+      <ul>
+        <li class="left" @click='back()'><img src="../image/1.png" alt="" style='width:20%;vertical-align:middle;'></li>
+        <li class="middle">
+          <router-link to="/"><span class="bookstore">书城</span></router-link>
+          <router-link to='/bookcase'><span class="bookshelf">书架</span></router-link>  
+        </li>
+        <li class='right'><i class="fa fa-user-o fa-lg"></i></li>
+      </ul>
+    </div>
     <div class="bookMallTop">
         <div class="search">输入书名/作者/关键字</div>
         <mt-swipe :auto="2000">
@@ -112,6 +122,9 @@ export default {
   methods:{
        toggle(val){
         this.nowIndex=val;
+       },
+       back(){
+        history.go(-1);
        }
   }
 }
@@ -122,6 +135,45 @@ export default {
   .bookMall{
     background: #fff;
   }
+   .bookMall .header{
+    height: 45px;
+    width: 100%;
+    background: #EFEFF0;
+  }
+  .bookMall .header ul{
+    overflow: hidden;
+    width: 95%;
+    margin: 0px auto;
+  }
+   .bookMall .header ul li{
+    float: left;
+    line-height: 45px;
+    vertical-align:middle;
+   }
+   .bookMall .header ul li.left{
+    text-align: left;
+    width:30%;
+   }
+   .bookMall .header ul li.middle{
+    box-sizing:border-box;
+    width:40%;
+    padding: 0px 10px;
+   }
+   .bookMall .header ul li.middle span{
+    display:block;
+    width:30%;
+    text-align: center;
+   }
+   .bookMall .header ul li.middle span.bookstore{
+    float: left;
+   }
+   .bookMall .header ul li.middle span.bookshelf{
+    float: right;
+   }
+   .bookMall .header ul li.right{
+    text-align:right;
+    width:30%;
+   }
   .bookMall .bookMallTop{
     padding-top: 10px;
     border-bottom: 10px solid #f5f5f5;

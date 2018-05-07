@@ -1,9 +1,10 @@
 <template>
-	<div class="waterfall">
+	<div class="waterfall" >
+<!--     <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true" v-show='isShow'></i> -->
 		<section class='channel-h5 channel-h5_tab' id='Tag_10'>
       <div class='tab_wrap'>
 	      <div class='Fade list-h5_wrap data-dom-uid="6"'>
-	        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+	        <div>
 	          <ul class='list-h5' v-for="(item,index) in items">
 	            <li>
 	              <div class="book-h5">
@@ -25,6 +26,7 @@
 	              </div>
 	            </li>
 	          </ul>
+            <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true" ></i>
 	        </div>
 	      </div>
       </div>
@@ -32,30 +34,42 @@
 	</div>
 </template>
 <script>
-import { Swipe,SwipeItem,Indicator,Toast,InfiniteScroll} from 'mint-ui';
+import { Swipe,SwipeItem,Indicator,Toast} from 'mint-ui';
 import axios from 'axios';
 	export default{
 		name:'WaterFall',
 		data(){
 			return{
           items:[],
+          count:0,
+          // isShow:false,
       }
 		},
 		mounted(){
+     /* window.addEventListener("scroll",this.handleScroll);*/
 			Indicator.open({
         text: '正在加载...',
         spinnerType: 'fading-circle'
       });
       axios({
 	      method:"GET",
-	      url:'/rock/book/recommend?start=0&count=10',
+	      url:'/rock/book/recommend?start='+this.count+'&count=10',
     	}).then((res)=>{
       Indicator.close();
       var respon=res.data;
       console.log(respon);
       if(respon.result==0){
-          this.items=respon.items;
-          console.log(this.items);
+          this.items=respon.items; 
+          var self=this;
+          $(window).scroll(function(){
+        　　var scrollTop = $(this).scrollTop();
+        　　var scrollHeight = $(document).height();
+        　　var windowHeight = $(this).height();
+        　　if(scrollTop + windowHeight == scrollHeight){
+        　　　 self.count=self.count+10;
+              console.log(self.count);
+        　　}
+        });
       }else{
 	        Toast({
 	          message: '数据请求失败',
@@ -70,32 +84,26 @@ import axios from 'axios';
 	    });
 		},
 		methods:{
-      // handleScroll(){ 
-      //   var t = document.documentElement.scrollTop || document.body.scrollTop;  //获取距离页面顶部的距离
-      //   console.log(t);
-      //   if(t>2740){
-      //     Indicator.open({
-      //       text: '',
-      //       spinnerType: 'fading-circle',
-      //     })
-      //   }
-      
-      // }
-      loadMore() {
-        this.loading = true;
-        var start=0;
-        var end=10;
-        setTimeout(() => {
-          start+=end;
-          end=         
-          this.loading = false;
-        }, 2500);
+     
+		},
+    watch:{
+      "count"(){
+        axios({
+        method:"GET",
+        url:'/rock/book/recommend?start='+this.count+'&count=10',
+      }).then((res)=>{
+          Indicator.close();
+          var respon=res.data;
+          for(var i =0; i< respon.items.length;i++){
+              this.items.push(respon.items[i])
+          }
+        })
       }
-		}
+    }
 	}
 </script>
 <style scoped>
-	.channel-h5{
+.channel-h5{
   position: relative;
   border-bottom: 10px solid #f5f5f5;
   background: #fff;

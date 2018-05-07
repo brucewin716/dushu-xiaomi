@@ -7,20 +7,13 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'Index',
-      component:Index,
-      children:[
-      	{
-      		path:'bookmall',
-      		component:Bookmall
-      	},
-      	{
-      		path:'/bookcase',
-      		component:Bookcase
-      	}
-      ]
-    },
+    	{
+    		path:'/',
+    		component:Bookmall
+    	},
+    	{
+    		path:'/bookcase',
+    		component:Bookcase
+    	}
     ]
 })
