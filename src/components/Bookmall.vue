@@ -2,7 +2,7 @@
   <div class="bookMall">
     <div class="header">
       <ul>
-        <li class="left" @click='back()'><img src="../image/1.png" alt="" style='width:20%;vertical-align:middle;'></li>
+        <li class="left" @click='back()'><img src="../image/1.png" alt="" style='width:25px;height:25px;vertical-align:middle;'></li>
         <li class="middle">
           <router-link to="/"><span class="bookstore">书城</span></router-link>
           <router-link to='/bookcase'><span class="bookshelf">书架</span></router-link>  
@@ -17,9 +17,9 @@
           <mt-swipe-item><img src="../image/2.jpg"></mt-swipe-item>
         </mt-swipe>
         <ul class='subItem'>
-           <li v-for="subItem in subItems">
-             <img :src="subItem.ad_copy.split('|')[2].split(';')[0]" alt="">
-             <p>{{subItem.ad_name}}</p>
+           <li v-for="subItem1 in subItems">
+             <img :src="subItem1.ad_copy.split('|')[2].split(';')[0]" alt="">
+             <p>{{subItem1.ad_name}}</p>
            </li>
         </ul>
     </div> 
@@ -79,7 +79,7 @@ export default {
     return {
         nowIndex:1,
         items:[],
-        subItems:[]
+        subItems:[],
     }
   },
   components:{
@@ -166,6 +166,11 @@ export default {
    }
    .bookMall .header ul li.middle span.bookstore{
     float: left;
+   }
+
+   .bookMall .header ul li.middle .router-link-active span.bookstore{
+     color:#ff6600;
+     border-bottom: 2px solid #777;
    }
    .bookMall .header ul li.middle span.bookshelf{
     float: right;
