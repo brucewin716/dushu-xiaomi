@@ -11,7 +11,7 @@
       </ul>
     </div>
     <div class="bookMallTop">
-        <div class="search">输入书名/作者/关键字</div>
+        <div class="search" @click='jumpTo()'>输入书名/作者/关键字</div>
         <mt-swipe :auto="2000">
           <mt-swipe-item><img src="../image/1.jpg"></mt-swipe-item>
           <mt-swipe-item><img src="../image/2.jpg"></mt-swipe-item>
@@ -29,7 +29,7 @@
           <h2>{{items[1].ad_name}}</h2>
         </div>
         <ul class="book-table">
-          <li v-for="item in items[1].data.data">
+          <li v-for="item in items[1].data.data" @click="goTo(item)">
             <div class="u-book">
               <div class="pic"><img :src="item.cover" alt=""></div>
               <div class="bookname">
@@ -80,6 +80,7 @@ export default {
         nowIndex:1,
         items:[],
         subItems:[],
+        fiction_id:0,
     }
   },
   components:{
@@ -125,6 +126,20 @@ export default {
        },
        back(){
         history.go(-1);
+       },
+       jumpTo(){
+        this.$router.push({
+          path:'search',
+        });
+       },
+       goTo(val){
+          var self=this;
+          this.$router.push({
+          path:'/detail',
+          query:{
+           fiction_id:val.fiction_id
+          }
+        });
        }
   }
 }

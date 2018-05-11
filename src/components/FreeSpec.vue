@@ -5,7 +5,7 @@
 		      <h2>{{items[5].ad_name}}</h2>
 		    </div>
 		    <ul class="book-table">
-		      <li v-for="item1 in subItems1">
+		      <li v-for="item1 in subItems1" @click='goTo()'>
 		        <div class="u-book">
 		          <div class="pic"><img :src="item1.data.book_cover" alt=""></div>
 		          <div class="bookname">
@@ -25,7 +25,7 @@
 	          
 	        </div>
 	        <ul class="book-table">
-	          <li v-for="item2 in subItems2" style="width:50%">
+	          <li v-for="item2 in subItems2" style="width:50%" @click='goTo()'>
 	            <div class="u-book" style="width:97%">
 	              <div class="pic" style="width:100%"><img :src="item2.ad_pic_url" alt=""></div>
 	            </div>
@@ -75,6 +75,13 @@ export default{
           iconClass:'mint-toast-icon mintui mintui-field-error' 
         });
     });
+  },
+  methods:{
+    goTo(){
+          this.$router.push({
+          path:'/detail',
+        });
+    }
   },
 }
 </script>

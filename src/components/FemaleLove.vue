@@ -10,7 +10,7 @@
       <div class='Fade list-h5_wrap data-dom-uid="6"'>
         <div v-for="(female,index) in femaleLove" class='femaleLoveTag'>
           <ul class='list-h5' v-for="femaleItem in female">
-            <li>
+            <li @click='goTo()'>
               <div class="book-h5">
                 <div class='book-h5_cover Lazy_loading Lazy_loaded'>
                   <img :src="femaleItem.cover"  alt=''>
@@ -93,6 +93,11 @@ methods:{
       }
       femaleLoveTag.eq(this.index).css('visibility','visible').siblings().css('visibility','hidden');
    },
+   goTo(){
+          this.$router.push({
+          path:'/detail',
+        });
+       }
   }
 }
 </script>
