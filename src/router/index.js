@@ -5,6 +5,7 @@ import Bookmall from '@/components/Bookmall'
 import Bookcase from '@/components/Bookcase'
 import Search from '@/components/Search'
 import DetailPage from '@/components/DetailPage'
+import ChapterPage from '@/components/ChapterPage'
 Vue.use(Router)
 
 export default new Router({
@@ -24,6 +25,10 @@ export default new Router({
         {
             path:'/detail',
             component:DetailPage
+        },
+        {
+            path:'/chapter',
+            component:ChapterPage
         }
     ]
 })

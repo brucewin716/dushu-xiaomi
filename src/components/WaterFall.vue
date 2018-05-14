@@ -6,7 +6,7 @@
 	      <div class='Fade list-h5_wrap data-dom-uid="6"'>
 	        <div>
 	          <ul class='list-h5' >
-	            <li v-for="(item,index) in items" @click='goTo()'>
+	            <li v-for="(item,index) in items" @click='goTo(item)'>
 	              <div class="book-h5">
 	                <div class='book-h5_cover Lazy_loading Lazy_loaded'>
 	                  <img :src="item.cover"  alt=''>
@@ -43,6 +43,7 @@ import axios from 'axios';
           items:[],
           count:0,
           // isShow:false,
+          fiction_id:0,
       }
 		},
 		mounted(){
@@ -60,6 +61,7 @@ import axios from 'axios';
       console.log(respon);
       if(respon.result==0){
           this.items=respon.items; 
+          console.log(this.items);
           var self=this;
           $(window).scroll(function(){
         　　var scrollTop = $(this).scrollTop();
@@ -84,9 +86,13 @@ import axios from 'axios';
 	    });
 		},
 		methods:{
-      goTo(){
+      goTo(val){
+          var self=this;
           this.$router.push({
           path:'/detail',
+          query:{
+           fiction_id:val.fiction_id
+          }
         });
        }
 		},

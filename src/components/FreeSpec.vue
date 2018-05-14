@@ -5,7 +5,7 @@
 		      <h2>{{items[5].ad_name}}</h2>
 		    </div>
 		    <ul class="book-table">
-		      <li v-for="item1 in subItems1" @click='goTo()'>
+		      <li v-for="item1 in subItems1" @click='goTo(item1.data)'>
 		        <div class="u-book">
 		          <div class="pic"><img :src="item1.data.book_cover" alt=""></div>
 		          <div class="bookname">
@@ -25,7 +25,7 @@
 	          
 	        </div>
 	        <ul class="book-table">
-	          <li v-for="item2 in subItems2" style="width:50%" @click='goTo()'>
+	          <li v-for="item2 in subItems2" style="width:50%" @click='changeTo(item2)'>
 	            <div class="u-book" style="width:97%">
 	              <div class="pic" style="width:100%"><img :src="item2.ad_pic_url" alt=""></div>
 	            </div>
@@ -45,10 +45,13 @@ export default{
 		  items:[],
 	      subItems1:[],
 	      subItems2:[],
-	      index:0
+	      index:0,
+        fiction_id:0,
+        reference_id:0
 		}
 	},
 	mounted(){
+    console.log(this.subItems2)
       Indicator.open({
         text: '正在加载...',
         spinnerType: 'fading-circle'
@@ -63,6 +66,7 @@ export default{
           this.items=result.items;
           this.subItems1=this.items[5].data.data;
           this.subItems2=this.items[6].data.data;
+          console.log(this.subItems2);
       }else{
         Toast({
           message: '数据请求失败',
@@ -77,10 +81,23 @@ export default{
     });
   },
   methods:{
-    goTo(){
-          this.$router.push({
-          path:'/detail',
-        });
+   goTo(val){
+        var self=this;
+        this.$router.push({
+        path:'/detail',
+        query:{
+         fiction_id:val.fiction_id
+        }
+      });
+    },
+    changeTo(val){
+        var self=this;
+        this.$router.push({
+        path:'/detail',
+        query:{
+         reference_id:val.reference_id
+        }
+      });
     }
   },
 }

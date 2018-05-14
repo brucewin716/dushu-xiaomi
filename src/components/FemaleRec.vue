@@ -4,7 +4,7 @@
       <div class='Fade list-h5_wrap data-dom-uid="6"'>
         <div v-for="(female,index) in femaleMajor" class='femaleTag'>
           <ul class='list-h5'>
-            <li @click='goTo()'>
+            <li @click='goTo(female)'>
               <div class="book-h5">
                 <div class='book-h5_cover Lazy_loading Lazy_loaded'>
                   <img :src="female.cover"  alt=''>
@@ -23,7 +23,7 @@
                 </div>
               </div>
             </li>
-            <li v-for="(list,index) in female.list" @click='goTo()'>
+            <li v-for="(list,index) in female.list" @click='goTo(list)'>
               <div class="book-h5 book-h5_no-img">
                 <span class='book-h5_no-img_order'>{{index+2}}</span>
                 <div class="book-h5_no-img_info">
@@ -53,7 +53,8 @@ name:'FemaleRec',
         maleArr:[],
         femaleArr:[],
         femaleMajor:[],
-        index:0
+        index:0,
+        fiction_id:0
   	}
   },
  mounted(){
@@ -115,11 +116,15 @@ methods:{
       }
       femaleTag.eq(this.index).css('visibility','visible').siblings().css('visibility','hidden');
    },
-   goTo(){
-          this.$router.push({
-          path:'/detail',
-        });
-       }
+   goTo(val){
+        var self=this;
+        this.$router.push({
+        path:'/detail',
+        query:{
+         fiction_id:val.fiction_id
+        }
+      });
+    }
   }
 }
 </script>

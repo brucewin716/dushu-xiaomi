@@ -4,7 +4,7 @@
             <div class='Fade list-h5_wrap data-dom-uid="6"'>
               <div v-for="(male,index) in maleMajor" class='maleTag'>
                 <ul class='list-h5'>
-                  <li @click="goTo()">
+                  <li @click="goTo(male)">
                     <div class="book-h5">
                       <div class='book-h5_cover Lazy_loading Lazy_loaded'>
                         <img :src="male.cover"  alt=''>
@@ -23,7 +23,7 @@
                       </div>
                     </div>
                   </li>
-                  <li v-for="(list,index) in male.list" @click="goTo()">
+                  <li v-for="(list,index) in male.list" @click="goTo(list)">
                     <div class="book-h5 book-h5_no-img">
                       <span class='book-h5_no-img_order'>{{index+2}}</span>
                       <div class="book-h5_no-img_info">
@@ -53,7 +53,8 @@ data(){
         maleArr:[],
         femaleArr:[],
         maleMajor:[],
-        index:0
+        index:0,
+        fiction_id:0
 	}
 },
  mounted(){
@@ -87,6 +88,7 @@ data(){
               for(var m=0;m<this.maleArr[l].length;m++){//遍历男3大份数据中的5小份数据
                   if(m==0){
                    this.maleMajor.push(this.maleArr[l][m]);
+                   console.log(this.maleMajor);
                    this.maleMajor[l].list=[]; 
                   }else{
                     this.maleMajor[l].list.push(this.maleArr[l][m]);
@@ -115,9 +117,13 @@ methods:{
       }
       maleTag.eq(this.index).css('visibility','visible').siblings().css('visibility','hidden');
    },
-   goTo(){
+   goTo(val){
+          var self=this;
           this.$router.push({
           path:'/detail',
+          query:{
+           fiction_id:val.fiction_id
+          }
         });
        }
   }

@@ -26,6 +26,10 @@ module.exports = {
         "/mfsv2":{
            target:"http://html.read.duokan.com",
           changeOrigin: true,  //是否跨域   
+        },
+        "/api":{
+           target:"http://admin2.eryicaier.com",
+          changeOrigin: true,  //是否跨域   
         }
     }
 ,

@@ -11,7 +11,7 @@
       <div class='Fade list-h5_wrap data-dom-uid="6"'>
         <div v-for="(maleL,index) in maleLove" class='maleLoveTag'>
           <ul class='list-h5' v-for='maleLitem in maleL'>
-            <li @click='goTo()'>
+            <li @click='goTo(maleLitem)'>
               <div class="book-h5">
                 <div class='book-h5_cover Lazy_loading Lazy_loaded'>
                   <img :src="maleLitem.cover"  alt=''>
@@ -52,7 +52,8 @@ data(){
 	    items:[],
       maleLove:[],
       subItems:[],
-      index:0
+      index:0,
+      fiction_id:0
 	}
 },
  mounted(){
@@ -93,11 +94,15 @@ methods:{
       }
       maleLoveTag.eq(this.index).css('visibility','visible').siblings().css('visibility','hidden');
    },
-   goTo(){
-          this.$router.push({
-          path:'/detail',
-        });
-       }
+    goTo(val){
+        var self=this;
+        this.$router.push({
+        path:'/detail',
+        query:{
+         fiction_id:val.fiction_id
+        }
+      });
+    }
   }
 }
 </script>

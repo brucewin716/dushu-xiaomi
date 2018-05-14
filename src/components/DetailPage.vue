@@ -4,7 +4,7 @@
 			<a href="javascript:history.go(-1)" class='backBtn'>
 				<i class='fa fa-angle-left fa-lg'></i>
 			</a>
-			<span class='title'> fdfdfdffd</span>
+			<span class='title'>{{item.title}}</span>
 			<a href="javascript:this.$router.push('/');" class='homeBtn'>
 				<i class='fa fa-home fa-lg'></i>
 			</a>
@@ -12,37 +12,35 @@
 		<div class="content">
 			<div class="overview">
 				<div class="overview_top">
-					<div class="bookName"><img src="../image/6pxzdbsi.png" alt=""></div>
+					<div class="bookName"><img :src="item.cover" alt=""></div>
 					<div class="bookintro">
-						<p class='title'>港娱1975</p>
-						<p class='remark'>来不及忧伤</p>
-						<p class='evaluate'><span class='star'>fdfd</span>19个评价</p>
-						<p class='count'>字数:425万字<span class='serial'>连载中</span></p>
+						<p class='title'>{{item.title}}</p>
+						<p class='remark'>{{item.authors}}</p>
+						<p class='evaluate'><span class='star'></span>{{item.score_count}}个评价</p>
+						<p class='count'>字数:{{String(item.word_count).slice(0,3)}}万字<span class='serial'>连载中</span></p>
 					</div>
 				</div>
 				<div class="overview_bottom">
 					<div class="btn">
-						<button>开始阅读</button>
+						<button @click='goTo()'>开始阅读</button>
 						<button>下载</button>
 					</div>
-					<div class="abstract">
-						穿越香江一九七五。
-						让我们一起回顾那些永恒的经典！
-						创了个群，号：543198555，暗号：1975.
-					</div>
-					<div class="latest">最新：第1405章 林美人的失落 更新于 16小时前</div>
+					<div class="abstract">{{item.content}}</div>
+					<div class="latest">最新:{{item.latest}} 更新于{{this.getUpdate()}}</div>
 				</div>
 			</div>
 			<div class="sortTag">
 				<h2>类别标签</h2>
-				<ul class='tagBtn'><li>都市</li><li>都市生活</li></ul>
+				<ul class='tagBtn'><li v-for=" subitem in item.tags">{{subitem}}</li></ul>
 			</div>
 			<div class="author_and_other">
 				<p class="other">作者和其他图书</p>
 				<ul class='otherList'>
-					<li>
-						<div><img src="" alt=""></div>
-						<p>二青</p>
+					<li v-for='author_book in author_books'>
+						<div>
+							<img :src="author_book.cover" alt="">
+							<p>{{author_book.title}}</p>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -54,23 +52,72 @@
 	</div>
 </template>
 <script>
-	import { Header } from 'mint-ui';
+	import {Indicator,Toast} from 'mint-ui';
+	import axios from 'axios';
 	export default{
 		name:'DetailPage',
 		data(){
 			return {
-
+				item:{},
+				source_id:'',
+				author_books:[],
 			}
 		},
 		mounted(){
-
+			this.source_id=location.hash.split('=')[1];
+			 Indicator.open({
+		        text: '正在加载...',
+		        spinnerType: 'fading-circle'
+		      });
+		      axios({
+		      method:"GET",
+		      url:'/hs/v0/android/fiction/book/'+this.source_id,
+		    }).then((res)=>{
+		      Indicator.close();
+		      var respon=res.data;
+		      console.log(respon)
+		      if(respon.result==0){
+		          this.item=respon.item;
+		          this.author_books=respon.author_books;
+		          console.log(this.item);
+		           console.log(this.author_books);
+		      }else{
+		        Toast({
+		          message: '数据请求失败',
+		          iconClass:'mint-toast-icon mintui mintui-field-error' 
+		        });
+		      }
+		    }).catch((e)=>{
+		      Toast({
+		          message:e.message,
+		          iconClass:'mint-toast-icon mintui mintui-field-error' 
+		        });
+		    });
 		},
 		methods:{
+			getUpdate(){
+				var oldDate=new Date(this.item.updated*1000);
+				var oYear=oldDate.getFullYear();
+				var oMonth=oldDate.getMonth()+1;
+				var oDate=oldDate.getDate();
+				var oHours=oldDate.getHours();
+				var ominutes=oldDate.getMinutes();
+				ominutes=ominutes<10? "0"+ominutes:ominutes;
+				return (oYear+'-'+oMonth+'-'+oDate+'\n\n'+oHours+':'+ominutes);
+			},
+			goTo(){
 
+				this.$router.push({
+					path:'/chapter',
+					query:{
+			           fiction_id:this.source_id
+			          }
+				});
+			}
 		},
-		watch(){
+		// watch(){
 
-		}
+		// }
 	}
 </script>
 <style scoped>
@@ -116,7 +163,7 @@
 		box-sizing: border-box;
 		padding: 10px 20px 30px 30px;
 	}
-	.detail .bookName{
+	.detail .bookName,.detail .bookName img{
 		width: 93px;
 		height: 124px;
 		margin-right: 18px;
@@ -135,9 +182,10 @@
 	}
 	.detail .bookintro p .star{
 		display: inline-block;
-		width: 80px;
+		width: 90px;
 		height: 12px;
 		margin: 0px 5px 0px 0px;
+		background: url('../image/star.png') no-repeat 0 -148px;
 	}
 	.detail .bookintro p .serial{
 		color: #63bd61;
@@ -231,13 +279,12 @@
 		margin-bottom: 8px;
 		text-align: left;
 	}
-	.detail .author_and_other .otherList li div{
+	.detail .author_and_other .otherList li div,
+	.detail .author_and_other .otherList li div img{
 		width: 86px;
-		height: 113px;
 	}
-	.detail .author_and_other .otherList li p{
-		text-align: left;
-		padding: 5px 0px;
+	.detail .author_and_other .otherList li div p{
+		line-height: 1.3;
 	}
 	.detail .bookInfo{
 		padding: 15px 14px;
