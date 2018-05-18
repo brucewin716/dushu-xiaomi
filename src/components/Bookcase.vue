@@ -12,9 +12,9 @@
     </div>
   	<div class="search">输入书名/作者/关键字</div>
 	<div class="wrap">
-		<div v-for="(item,index) in items" class='maleLoveTag'>
+		<div class='maleLoveTag'>
           <ul class='list-h5'>
-            <li>
+            <li v-for="(item,index) in items" @click='goTo(item)'>
               <div class="book-h5">
                 <div class='book-h5_cover Lazy_loading Lazy_loaded'>
                   <img :src="item.cover"  alt=''>
@@ -47,7 +47,8 @@ export default {
   data () {
     return {
       items:[],
-      index:0
+      index:0,
+      fiction_id:0
     }
   },
   mounted(){
@@ -80,7 +81,16 @@ export default {
   methods:{
   	back(){
   		history.go(-1);
-  	}
+  	},
+    goTo(val){
+        var self=this;
+        this.$router.push({
+        path:'/detail',
+        query:{
+         fiction_id:val.fiction_id
+        }
+      });
+    }
 
   }
 }

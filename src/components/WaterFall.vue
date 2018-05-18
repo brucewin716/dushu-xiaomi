@@ -43,7 +43,7 @@ import axios from 'axios';
           items:[],
           count:0,
           // isShow:false,
-          fiction_id:0,
+          sid:0,
       }
 		},
 		mounted(){
@@ -69,7 +69,6 @@ import axios from 'axios';
         　　var windowHeight = $(this).height();
         　　if(scrollTop + windowHeight == scrollHeight){
         　　　 self.count=self.count+10;
-              console.log(self.count);
         　　}
         });
       }else{
@@ -91,7 +90,7 @@ import axios from 'axios';
           this.$router.push({
           path:'/detail',
           query:{
-           fiction_id:val.fiction_id
+           sid:val.sid
           }
         });
        }

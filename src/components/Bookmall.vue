@@ -137,7 +137,7 @@ export default {
           this.$router.push({
           path:'/detail',
           query:{
-           fiction_id:val.fiction_id
+           fiction_id:val.fiction_id,
           }
         });
        }

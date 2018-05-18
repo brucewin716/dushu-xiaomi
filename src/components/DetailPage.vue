@@ -61,6 +61,7 @@
 				item:{},
 				source_id:'',
 				author_books:[],
+				chapter_id:0
 			}
 		},
 		mounted(){
@@ -110,7 +111,8 @@
 				this.$router.push({
 					path:'/chapter',
 					query:{
-			           fiction_id:this.source_id
+			           fiction_id:this.source_id,
+			           chapter_id:this.chapter_id
 			          }
 				});
 			}
