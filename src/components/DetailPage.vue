@@ -59,20 +59,20 @@
 		data(){
 			return {
 				item:{},
-				source_id:'',
+				fiction_id:'',
 				author_books:[],
 				chapter_id:0
 			}
 		},
 		mounted(){
-			this.source_id=location.hash.split('=')[1];
+			this.fiction_id=location.hash.split('=')[1];
 			 Indicator.open({
 		        text: '正在加载...',
 		        spinnerType: 'fading-circle'
 		      });
 		      axios({
 		      method:"GET",
-		      url:'/hs/v0/android/fiction/book/'+this.source_id,
+		      url:'/hs/v0/android/fiction/book/'+this.fiction_id,
 		    }).then((res)=>{
 		      Indicator.close();
 		      var respon=res.data;
@@ -80,6 +80,9 @@
 		      if(respon.result==0){
 		          this.item=respon.item;
 		          this.author_books=respon.author_books;
+
+		          localStorage.setItem('fiction'+this.fiction_id,JSON.stringify(this.item));
+
 		          console.log(this.item);
 		           console.log(this.author_books);
 		      }else{
@@ -107,11 +110,17 @@
 				return (oYear+'-'+oMonth+'-'+oDate+'\n\n'+oHours+':'+ominutes);
 			},
 			goTo(){
-
+				var num=localStorage.getItem('fiction'+this.fiction_id+'_progress');
+				if(num){
+					this.chapter_id=num;
+				}else{
+					localStorage.setItem('fiction'+this.fiction_id+'_progress','0');
+					this.chapter_id=localStorage.getItem('fiction'+this.fiction_id+'_progress',0);
+				}
 				this.$router.push({
 					path:'/chapter',
 					query:{
-			           fiction_id:this.source_id,
+			           fiction_id:this.fiction_id,
 			           chapter_id:this.chapter_id
 			          }
 				});

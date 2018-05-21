@@ -18,12 +18,8 @@ export default {
   },
   watch: {
     '$route' (to, from){
-        console.log(to);
-        console.log(from);
         const toDepth = to.path.split('/').length;
-        console.log(toDepth);
         const fromDepth = from.path.split('/').length;
-        console.log(fromDepth);
         this.names = toDepth < fromDepth ? 'slide-right' : 'slide-left';
     }
   }

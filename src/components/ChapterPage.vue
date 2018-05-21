@@ -1,5 +1,5 @@
 <template>
-	<div class="chapterPage" @click='changeView()'>
+	<div class="chapterPage">
 		<ul class='chapter'>
 			<li v-for='chapter in chapterArr'>
 				<h2 class='chapter_title'>{{chapter.t}}</h2>
@@ -16,16 +16,16 @@
 			</div>
 			<div class="reader_foot">
 				<div class="reader_ft_bar">
-					<a href="javascript:;" class='prev_chapter'>上一章</a>
-					<a href="javascript:;" class='chapter_change'>{{}}</a>
-					<a href="javascript:;" class='next_chapter'>下一章</a>
+					<a href="javascript:;" class='prev_chapter' @click='skipChapter()'>上一章</a>
+					<a href="javascript:;" class='chapter_change'>{{this.chapter_id+"/"+this.chapter_count}}</a>
+					<a href="javascript:;" class='next_chapter' @click='skipChapter()'>下一章</a>
 				</div>
 				<a href="javascript:;" class='reader_toc'></a>
 				<a href="javascript:;" class='reader_ft' @click='changeView()' v-show='state'></a>
 				<a href="javascript:;" class='reader_night'></a>
 				<a href="javascript:;" class='reader_download'></a>
 			</div>
-			<div class="reader_font">
+			<div class="reader_font" v-show='fontState'>
 				<div class="reader_font-size">
 					<span>字号</span>
 					<a href="javascript:;" class="reader_font-large">大</a>
@@ -37,6 +37,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="clickZero" @click='changeView()'></div>
 	</div>
 </template>
 <script>
@@ -50,14 +51,18 @@
 				charts:'',
 				fiction_id:this.$route.query.fiction_id,
 				chapter_id:this.$route.query.chapter_id,
+				chapter_count:0,
 				chapterArr:[],
 				show:false,
 				state:false,
+				fontState:false,
 				colorArr:['#0f1410','#f7eee5','#e9dfc7','#a4a4a4','#cdefce','#283548']
 			}
 		},
 		mounted(){
-			console.log(this.$router);
+			// console.log(this.$route.query);
+			// console.log(localStorage.getItem('fiction'+this.fiction_id+'_progress'));
+			this.chapter_count=JSON.parse(localStorage.getItem('fiction'+this.fiction_id)).chapter_count;
 			 Indicator.open({
 		        text: '正在加载...',
 		        spinnerType: 'fading-circle'
@@ -77,14 +82,17 @@
 			    	this.show=true;
 			    	var respon=res.data;
 			    	this.charts=JSON.parse(Base64.decode(respon.split("'")[1]));
+			    	console.log(this.charts);
 			    	this.chapterArr.push(this.charts);
 			    	var self=this;
-				    $(window).scroll(function(){
+			    	$(window).unbind('scroll');
+				    $(window).bind('scroll',function(){
 			        　　var scrollTop = $(this).scrollTop();
 			        　　var scrollHeight = $(document).height();
 			        　　var windowHeight = $(this).height();
 			        　　if(scrollTop + windowHeight == scrollHeight){
 			        　　　 self.chapter_id++;
+			        	   localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
 			        	  self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);			              
 			        　　}
 			        });
@@ -103,12 +111,33 @@
 		    });
 		},
 		methods:{
-			changeView(){
-				this.state=!this.state;
+			changeView(e){
+				var e=e||window.event;
+				var target=e.target;
+				if(target.nodeName=="DIV"){
+					this.state=!this.state;	
+				}else{
+					this.fontState=!this.fontState;
+				}
+			},
+			skipChapter(e){
+				var e=e||window.event;
+				var target=e.target;
+				var self=this;
+				if(target.innerHTML=='上一章'){
+					self.chapter_id--;
+					localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
+					self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);
+				}else{
+					self.chapter_id++;
+					localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
+					self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);
+				}
 			}
 		},
 		watch:{
 			"chapter_id"(){
+				console.log(this.chapter_id);
 		       axios({
 			      method:"GET",
 			      url:'/api/private/dushu/getDushuCallbackUrl?fiction_id='+this.fiction_id+'&chapter_id='+this.chapter_id+'&format=jsonp',
@@ -123,7 +152,6 @@
 							var respon=res.data;
 			    			this.charts=JSON.parse(Base64.decode(respon.split("'")[1]));
 			    			this.chapterArr.push(this.charts);
-			    			console.log(this.chapterArr);
 						})
 		       		}
 		       })
@@ -161,7 +189,7 @@
 		text-align: left;
 	}
 	.chapterPage .maskWrap,.chapterPage .maskWrap .mask{
-		position: absolute;
+		position:fixed;
 		left: 0px;
 		right: 0px;
 		top: 0px;
@@ -346,5 +374,15 @@
 	.chapterPage .maskWrap .reader_font .reader_font-bg a[data-bg='0']{
 		background: #0f1410;
 	}
+	.chapterPage .clickZero{
+		width: 200px;
+		height:200px;
+		position:fixed;
+		left: 50%;
+		top: 50%;
+		margin-top: -150px;
+		margin-left: -100px;
+		z-index: 10;
 
+	}
 </style>
