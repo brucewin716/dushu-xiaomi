@@ -10,7 +10,7 @@
 		<div class="maskWrap" v-show='state'>
 			<div class="mask"></div>
 			<div class="reader_head">
-				<span class='icon_left'></span>
+				<span class='icon_left' @click="back()"></span>
 				<span class='title' style='color:#fff;'>返回</span>
 				<span class='icon_right'></span>
 			</div>
@@ -20,7 +20,7 @@
 					<a href="javascript:;" class='chapter_change'>{{this.chapter_id+"/"+this.chapter_count}}</a>
 					<a href="javascript:;" class='next_chapter' @click='skipChapter()'>下一章</a>
 				</div>
-				<a href="javascript:;" class='reader_toc'></a>
+				<a href="javascript:;" class='reader_toc' @click='goTo()'></a>
 				<a href="javascript:;" class='reader_ft' @click='changeView()' v-show='state'></a>
 				<a href="javascript:;" class='reader_night'></a>
 				<a href="javascript:;" class='reader_download'></a>
@@ -28,8 +28,8 @@
 			<div class="reader_font" v-show='fontState'>
 				<div class="reader_font-size">
 					<span>字号</span>
-					<a href="javascript:;" class="reader_font-large">大</a>
-					<a href="javascript:;" class="reader_font_small">小</a>
+					<a href="javascript:;" class="reader_font-large" @click='plus()'>大</a>
+					<a href="javascript:;" class="reader_font_small" @click='minus()'>小</a>
 				</div>
 				<div class="reader_font-bg">
 					<span>背景</span>
@@ -56,13 +56,14 @@
 				show:false,
 				state:false,
 				fontState:false,
+				change:0,
+				readerFontSize:Number(localStorage.getItem('readerFontSize')),
 				colorArr:['#0f1410','#f7eee5','#e9dfc7','#a4a4a4','#cdefce','#283548']
 			}
 		},
 		mounted(){
-			// console.log(this.$route.query);
-			// console.log(localStorage.getItem('fiction'+this.fiction_id+'_progress'));
 			this.chapter_count=JSON.parse(localStorage.getItem('fiction'+this.fiction_id)).chapter_count;
+			localStorage.setItem('readerFontSize',12)
 			 Indicator.open({
 		        text: '正在加载...',
 		        spinnerType: 'fading-circle'
@@ -71,6 +72,7 @@
 		      method:"GET",
 		      url:'/api/private/dushu/getDushuCallbackUrl?fiction_id='+this.fiction_id+'&chapter_id='+this.chapter_id+'&format=jsonp',
 		    }).then((res)=>{
+
 		      Indicator.close();
 		      var respon=res.data;
 		      if(respon.result==0){
@@ -85,8 +87,8 @@
 			    	console.log(this.charts);
 			    	this.chapterArr.push(this.charts);
 			    	var self=this;
-			    	$(window).unbind('scroll');
-				    $(window).bind('scroll',function(){
+			    	$(window).off('scroll');
+				    $(window).on('scroll',function(){
 			        　　var scrollTop = $(this).scrollTop();
 			        　　var scrollHeight = $(document).height();
 			        　　var windowHeight = $(this).height();
@@ -111,6 +113,37 @@
 		    });
 		},
 		methods:{
+			plus(){
+				if(this.readerFontSize<21){
+					this.readerFontSize++;
+					localStorage.setItem('readerFontSize',this.readerFontSize);
+					$('.chapter p').attr({style:'font-size:'+this.readerFontSize+'px'});
+				}
+			},
+			minus(){
+				if(this.readerFontSize>11){
+					this.readerFontSize--;
+					localStorage.setItem('readerFontSize',this.readerFontSize);
+					$('.chapter p').attr({style:'font-size:'+this.readerFontSize+'px'});
+				}
+			},
+			back(){
+				this.$router.push({
+					path:'/detail',
+					query:{
+						fiction_id:this.fiction_id
+					}
+				})
+			},
+			goTo(){
+				this.$router.push({
+					path:'/chapterList',
+					query:{
+						fiction_id:this.fiction_id,
+						chapter_id:0
+					}
+				});
+			},
 			changeView(e){
 				var e=e||window.event;
 				var target=e.target;
@@ -121,23 +154,36 @@
 				}
 			},
 			skipChapter(e){
+				$(window).scroll(function(){
+					return false;
+				});
+				// $('body').prop('scrollTop','0');
 				var e=e||window.event;
 				var target=e.target;
-				var self=this;
+				this.change=1;
 				if(target.innerHTML=='上一章'){
-					self.chapter_id--;
-					localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
-					self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);
+					if(this.chapter_id>0){
+						this.chapter_id--;
+					}else{
+						this.chapter_id=0;
+					}
+					
+					localStorage.setItem('fiction'+this.fiction_id+'_progress',this.chapter_id);
+					this.$router.replace('chapter?fiction_id='+this.fiction_id+'&chapter_id='+this.chapter_id);
 				}else{
-					self.chapter_id++;
-					localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
-					self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);
+					if(this.chapter_id<this.chapter_count){
+						this.chapter_id++;
+					}else{
+						this.chapter_id=this.chapter_count;
+					}
+					
+					localStorage.setItem('fiction'+this.fiction_id+'_progress',this.chapter_id);
+					this.$router.replace('chapter?fiction_id='+this.fiction_id+'&chapter_id='+this.chapter_id);
 				}
 			}
 		},
 		watch:{
 			"chapter_id"(){
-				console.log(this.chapter_id);
 		       axios({
 			      method:"GET",
 			      url:'/api/private/dushu/getDushuCallbackUrl?fiction_id='+this.fiction_id+'&chapter_id='+this.chapter_id+'&format=jsonp',
@@ -151,7 +197,17 @@
 						}).then((res)=>{
 							var respon=res.data;
 			    			this.charts=JSON.parse(Base64.decode(respon.split("'")[1]));
-			    			this.chapterArr.push(this.charts);
+			    			console.log(this.change);
+			    			if(this.change==1){		    				
+			    				this.chapterArr=[];
+			    				this.chapterArr.push(this.charts);
+			    				this.change=0;
+			    				console.log(this.chapterArr);
+			    			}else{
+			    				console.log(this.change)
+			    				this.chapterArr.push(this.charts);	
+			    				console.log(this.chapterArr);
+			    			}
 						})
 		       		}
 		       })
