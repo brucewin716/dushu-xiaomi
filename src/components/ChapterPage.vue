@@ -12,9 +12,9 @@
 			<div class="reader_head">
 				<span class='icon_left' @click="back()"></span>
 				<span class='title' style='color:#fff;'>返回</span>
-				<span class='icon_right'></span>
+				<span class='icon_right' @click='popu()'></span>
 			</div>
-			<div class="reader_foot">
+			<div class="reader_foot" :data-night='num'>
 				<div class="reader_ft_bar">
 					<a href="javascript:;" class='prev_chapter' @click='skipChapter()'>上一章</a>
 					<a href="javascript:;" class='chapter_change'>{{this.chapter_id+"/"+this.chapter_count}}</a>
@@ -22,7 +22,7 @@
 				</div>
 				<a href="javascript:;" class='reader_toc' @click='goTo()'></a>
 				<a href="javascript:;" class='reader_ft' @click='changeView()' v-show='state'></a>
-				<a href="javascript:;" class='reader_night'></a>
+				<a href="javascript:;" class='reader_night' @click='changeDayNight()'></a>
 				<a href="javascript:;" class='reader_download'></a>
 			</div>
 			<div class="reader_font" v-show='fontState'>
@@ -33,7 +33,7 @@
 				</div>
 				<div class="reader_font-bg">
 					<span>背景</span>
-					<a href="javascript:;" v-for=" (n,index) in 6" :data-bg="index"></a>
+					<a href="javascript:;" v-for=" (n,index) in 6" :data-bg="index" @click='changeColor(index)'></a>
 				</div>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 	</div>
 </template>
 <script>
-	import { Header,Indicator,Toast} from 'mint-ui';
+	import {Indicator,Toast} from 'mint-ui';
 	import axios from 'axios';
 	export default{
 		name:'ChapterPage',
@@ -57,13 +57,14 @@
 				state:false,
 				fontState:false,
 				change:0,
+				num:0,
 				readerFontSize:Number(localStorage.getItem('readerFontSize')),
 				colorArr:['#0f1410','#f7eee5','#e9dfc7','#a4a4a4','#cdefce','#283548']
 			}
 		},
 		mounted(){
 			this.chapter_count=JSON.parse(localStorage.getItem('fiction'+this.fiction_id)).chapter_count;
-			localStorage.setItem('readerFontSize',12)
+			localStorage.setItem('readerFontSize',16)
 			 Indicator.open({
 		        text: '正在加载...',
 		        spinnerType: 'fading-circle'
@@ -113,6 +114,22 @@
 		    });
 		},
 		methods:{
+			popu(){
+				this.popupVisible=true;
+			},
+			changeDayNight(){
+				if(this.num==0){
+					this.num=1;
+					$('.chapter').css('backgroundColor','#0f1410');
+				}else{
+					this.num=0;
+					$('.chapter').css('backgroundColor','');
+				}
+			},
+			changeColor(val){
+				$("a[data-bg='"+val+"']").addClass('active').siblings('a').removeClass('active');
+				$('.chapter').css('backgroundColor',this.colorArr[val]);
+			},
 			plus(){
 				if(this.readerFontSize<21){
 					this.readerFontSize++;
@@ -220,13 +237,20 @@
     	background: #f7eee5;
     	height: 100%;
     }
+ /*    .chapterPage::-webkit-scrollbar{
+    	display: none;
+	} */
     .chapterPage ul{
     	background: #f7eee5;
     }
+   /*  .chapterPage[data-night='1'] ul{
+    	background: #f7eee5;
+    } */
 	.chapterPage ul li{
 		box-sizing: border-box;
     	padding: 15px 15px 0px 15px;
 		margin-bottom: 35px;
+		/* background: #f7eee5 ; */
 	}
 	.chapterPage ul li h2{
 		font-size: 20px;
@@ -351,15 +375,25 @@
 	a.reader_ft:after{
 		content: '\5b57\4f53';
 	}
-	a.reader_night:before{
+	.reader_foot[data-night='0'] .reader_night:before{
 		width: 16px;
 		height: 16px;
 		margin-bottom: 6px !important;
 		background: url('../image/veo70tka.png') no-repeat;
 		background-size: 16px 16px;	
 	}
-	a.reader_night:after{
+	.reader_foot[data-night='1'] .reader_night:before{
+		width: 16px;
+		height: 16px;
+		margin-bottom: 6px !important;
+		background: url('../image/iozve5iu.png') no-repeat;
+		background-size: 16px 16px;	
+	}
+	.reader_foot[data-night='0'] .reader_night:after{
 		content: '\767d\5929';
+	}
+	.reader_foot[data-night='1'] .reader_night:after{
+		content: '\591c\95f4';
 	}
 	a.reader_download:before{
 		width: 22px;
@@ -409,8 +443,12 @@
 		margin-left: 10px;
 		width: 30px;
 		height: 30px;
+		border: 1px solid transparent;
 		border-radius: 15px;
 		background: #fff;
+	}
+	.active{
+	    border: 1px solid #ff7800 !important;
 	}
 	.chapterPage .maskWrap .reader_font .reader_font-bg a[data-bg='1']{
 		background: #f7eee5;

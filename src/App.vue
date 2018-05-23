@@ -43,7 +43,7 @@ export default {
     top: 0;
     height: 100%;
     width: 100%;
-    transition: all .5s cubic-bezier(.55,0,.1,1);
+    transition: all 1s cubic-bezier(.55,0,.1,1);
     background-color: #f2f2f2;
     /* overflow:scroll; */
     -webkit-overflow-scrolling: touch;
@@ -53,22 +53,22 @@ export default {
     opacity: 0;
     -webkit-transform: translate(370px, 0);
     transform: translate(370px, 0);
-    transition-delay: .5s;
+    transition-delay: 1s;
     -webkit-transition-delay: .5s;
 }
 .slide-left-leave-active, .slide-right-enter {
     opacity: 0;
     -webkit-transform: translate(370px, 0);
     transform: translate(370px, 0);
-    transition-delay: .5s;
+    transition-delay: 1s;
     -webkit-transition-delay: .5s;
 }
 .slide-enter-active {
-    -webkit-transition: all .3s ease;
-    transition: all .3s ease;
+    -webkit-transition: all .5s ease;
+    transition: all 1s ease;
 }
 .slide-leave-active {
     -webkit-transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 </style>

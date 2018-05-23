@@ -63,7 +63,8 @@ import axios from 'axios';
           this.items=respon.items; 
           console.log(this.items);
           var self=this;
-          $(window).scroll(function(){
+          $(window).off('scroll');
+          $(window).on('scroll',function(){
         　　var scrollTop = $(this).scrollTop();
         　　var scrollHeight = $(document).height();
         　　var windowHeight = $(this).height();

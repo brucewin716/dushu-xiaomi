@@ -59,7 +59,6 @@
 				this.$router.push({path:'/'});
 			},
 			skip(val){
-				alert(val.chapter_id)
 				this.$router.replace('chapter?fiction_id='+this.fiction_id+'&chapter_id='+val.chapter_id);
 				localStorage.setItem('fiction'+this.fiction_id+'_progress',val.chapter_id);
 				this.$router.push({

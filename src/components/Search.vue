@@ -204,6 +204,7 @@
 }
 .list-h5,.list-more_wrap{
   padding: 0px 13px;
+  background: #fff;
 }
 .list-h5 li,.list-more_wrap li{
   padding: 17px 0px;

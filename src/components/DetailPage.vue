@@ -1,12 +1,10 @@
 <template>
 	<div class="detail">
 		<div class="header">
-			<a href="javascript:history.go(-1)" class='backBtn'>
-				<i class='fa fa-angle-left fa-lg'></i>
+			<a href="javascript:;" class='backBtn' @click='skip()'>
 			</a>
 			<span class='title'>{{item.title}}</span>
-			<a href="javascript:this.$router.push('/');" class='homeBtn'>
-				<i class='fa fa-home fa-lg'></i>
+			<a href="javascript:;" class='homeBtn' @click='skip()'>
 			</a>
 		</div>
 		<div class="content">
@@ -99,6 +97,9 @@
 		    });
 		},
 		methods:{
+			skip(){
+				this.$router.push({path:'/'});
+			},
 			getUpdate(){
 				var oldDate=new Date(this.item.updated*1000);
 				var oYear=oldDate.getFullYear();
@@ -145,6 +146,8 @@
 		float: left;
 		width: 42px;
 		height: 44px;
+		background: url('../image/x0D0GrWs.png') no-repeat center;
+		background-size:10px;
 	}
 	.detail .homeBtn{
 		position: absolute;
@@ -154,6 +157,8 @@
 		position: ;
 		width: 44px;
 		height: 44px;
+		background: url('../image/qts90e2zvritaa.png') no-repeat center;
+		background-size:16px;
 	}
 	.detail .title{
 		display: block;

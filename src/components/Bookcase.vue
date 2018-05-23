@@ -7,10 +7,14 @@
           <router-link to="/"><span class="bookstore">书城</span></router-link>
           <router-link to='/bookcase'><span class="bookshelf">书架</span></router-link>  
         </li>
-        <li class='right'><i class="fa fa-user-o fa-lg"></i></li>
+        <li class='right'></li>
       </ul>
     </div>
-  	<div class="search">输入书名/作者/关键字</div>
+    <div class="searchBox">
+      <div class="search" @click='jumpTo()'>输入书名/作者/关键字</div>
+      <div class="show"></div>
+    </div>
+  	
 	<div class="wrap">
 		<div class='maleLoveTag'>
           <ul class='list-h5'>
@@ -79,6 +83,11 @@ export default {
     });
   },
   methods:{
+    jumpTo(){
+      this.$router.push({
+        path:'search',
+      });
+    },
   	back(){
   		history.go(-1);
   	},
@@ -144,13 +153,19 @@ Add "scoped" attribute to limit CSS to this component only
    .bookCase .header ul li.right{
     text-align:right;
     width:30%;
+    height: 47px;
+    background: url('../image/boug2ejlvetomc.png') no-repeat 80px 15px;
+    background-size: 18px;
    }
 	.maleLoveTag{
 		overflow: hidden;
 	}	
-  .bookCase .search{
+  .bookCase .searchBox{
+      position: relative;
+  }
+  .bookCase .searchBox .search{
   	box-sizing: border-box;
-    width: 349px;
+    width: 300px;
     height: 36px;
     margin: 0px 13px 10px 13px;
     border: 1px solid #f5f5f5;
@@ -161,6 +176,16 @@ Add "scoped" attribute to limit CSS to this component only
     border-radius: 2px;
     background: url("../image/76vuoz@b.png") no-repeat 8px center;
     background-size:14px ;
+  }
+  .bookCase .searchBox .show{
+    position: absolute;
+    right:15px;
+    top: 0px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #f5f5f5;
+    background: url('../image/b7ufadlfufqkml.png') no-repeat center;
+    background-size:20px;
   }
   .list-h5,.list-more_wrap{
   padding: 0px 13px;

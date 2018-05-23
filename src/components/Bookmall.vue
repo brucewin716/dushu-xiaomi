@@ -7,7 +7,7 @@
           <router-link to="/"><span class="bookstore">书城</span></router-link>
           <router-link to='/bookcase'><span class="bookshelf">书架</span></router-link>  
         </li>
-        <li class='right'><i class="fa fa-user-o fa-lg"></i></li>
+        <li class='right'></li>
       </ul>
     </div>
     <div class="bookMallTop">
@@ -193,6 +193,9 @@ export default {
    .bookMall .header ul li.right{
     text-align:right;
     width:30%;
+    height: 47px;
+    background: url('../image/boug2ejlvetomc.png') no-repeat 80px 15px;
+    background-size: 18px;
    }
   .bookMall .bookMallTop{
     padding-top: 10px;
