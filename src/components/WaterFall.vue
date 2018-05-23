@@ -102,7 +102,6 @@ import axios from 'axios';
         method:"GET",
         url:'/rock/book/recommend?start='+this.count+'&count=10',
       }).then((res)=>{
-          Indicator.close();
           var respon=res.data;
           for(var i =0; i< respon.items.length;i++){
               this.items.push(respon.items[i])

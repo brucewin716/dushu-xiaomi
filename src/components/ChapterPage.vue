@@ -145,6 +145,7 @@
 				}
 			},
 			back(){
+				$(window).off('scroll');
 				this.$router.push({
 					path:'/detail',
 					query:{
@@ -214,16 +215,12 @@
 						}).then((res)=>{
 							var respon=res.data;
 			    			this.charts=JSON.parse(Base64.decode(respon.split("'")[1]));
-			    			console.log(this.change);
 			    			if(this.change==1){		    				
 			    				this.chapterArr=[];
 			    				this.chapterArr.push(this.charts);
 			    				this.change=0;
-			    				console.log(this.chapterArr);
 			    			}else{
-			    				console.log(this.change)
 			    				this.chapterArr.push(this.charts);	
-			    				console.log(this.chapterArr);
 			    			}
 						})
 		       		}

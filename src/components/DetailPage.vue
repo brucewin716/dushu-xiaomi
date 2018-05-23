@@ -127,9 +127,6 @@
 				});
 			}
 		},
-		// watch(){
-
-		// }
 	}
 </script>
 <style scoped>
