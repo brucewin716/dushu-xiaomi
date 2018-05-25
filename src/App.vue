@@ -13,7 +13,7 @@ export default {
   name: 'App',
   data(){
   	return {
-      names:'',
+     names:'slide-left',
   	}
   },
   watch: {
@@ -49,26 +49,26 @@ export default {
     -webkit-overflow-scrolling: touch;
 }
 /* 当child-view的内容过多时会撑开child-view使得内部能够滚动 */
-.slide-left-enter, .slide-right-leave-active {
+.slide-left-enter{
     opacity: 0;
-    -webkit-transform: translate(370px, 0);
-    transform: translate(370px, 0);
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
     transition-delay: 1s;
-    -webkit-transition-delay: .5s;
+    -webkit-transition-delay:1s;
 }
-.slide-left-leave-active, .slide-right-enter {
+.slide-left-leave-active{
     opacity: 0;
-    -webkit-transform: translate(370px, 0);
-    transform: translate(370px, 0);
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
     transition-delay: 1s;
-    -webkit-transition-delay: .5s;
+    -webkit-transition-delay: 1s;
 }
 .slide-enter-active {
-    -webkit-transition: all .5s ease;
+    -webkit-transition: all 1s ease;
     transition: all 1s ease;
 }
 .slide-leave-active {
-    -webkit-transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    -webkit-transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 </style>

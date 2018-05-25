@@ -93,7 +93,7 @@
 			        　　var scrollTop = $(this).scrollTop();
 			        　　var scrollHeight = $(document).height();
 			        　　var windowHeight = $(this).height();
-			        　　if(scrollTop + windowHeight == scrollHeight){
+			        　　if(scrollTop + windowHeight==scrollHeight){
 			        　　　 self.chapter_id++;
 			        	   localStorage.setItem('fiction'+self.fiction_id+'_progress',self.chapter_id);
 			        	  self.$router.replace('chapter?fiction_id='+self.fiction_id+'&chapter_id='+self.chapter_id);			              

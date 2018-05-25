@@ -68,7 +68,7 @@ import axios from 'axios';
         　　var scrollTop = $(this).scrollTop();
         　　var scrollHeight = $(document).height();
         　　var windowHeight = $(this).height();
-        　　if(scrollTop + windowHeight == scrollHeight){
+        　　if(scrollTop + windowHeight+100>=scrollHeight){
         　　　 self.count=self.count+10;
         　　}
         });

@@ -38,7 +38,7 @@
             </div>
           </li>
         </ul>
-        <a href="" class="channel-group_footer">查看更多</a>
+        <a href="javascript:;" class="channel-group_footer" @click="checkMore(items[1].reference_id)">查看更多</a>
       </section>
       <section class='channel-h5 channel-h5_tab' id='Tag_10'>
         <div class="channel-h5_header">
@@ -77,10 +77,10 @@ export default {
   name: 'Bookmall',
   data () {
     return {
-        nowIndex:1,
-        items:[],
-        subItems:[],
-        fiction_id:0,
+      nowIndex:1,
+      items:[],
+      subItems:[],
+      fiction_id:0,
     }
   },
   components:{
@@ -103,10 +103,10 @@ export default {
       Indicator.close();
       var result=res.data;
       if(result.ad_setting_id==418){
-          this.items=result.items;
-          console.log(this.items);
-          this.subItems=result.items[0].data.data.slice(2);
-          console.log(this.subItems);
+        this.items=result.items;
+        console.log(this.items);
+        this.subItems=result.items[0].data.data.slice(2);
+        console.log(this.subItems);
       }else{
         Toast({
           message: '数据请求失败',
@@ -121,6 +121,14 @@ export default {
     });
   },
   methods:{
+       checkMore(list_id){
+          this.$router.push({
+            path:'/checkMore',
+            query:{
+              list_id:list_id
+            }
+          });
+       },
        toggle(val){
         this.nowIndex=val;
        },
@@ -341,7 +349,6 @@ export default {
 .tab_on{
   color: #528ac8 !important;
 }
-
 .tab_bd{
   overflow: hidden;
 }

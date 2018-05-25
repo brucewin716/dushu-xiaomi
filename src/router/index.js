@@ -7,6 +7,7 @@ import Search from '@/components/Search'
 import DetailPage from '@/components/DetailPage'
 import ChapterPage from '@/components/ChapterPage'
 import ChapterList from '@/components/ChapterList'
+import CheckMore from '@/components/CheckMore'
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +35,10 @@ export default new Router({
          {
             path:'/chapterList',
             component:ChapterList
+        },
+        {
+            path:'/checkMore',
+            component:CheckMore
         }
     ]
 })
